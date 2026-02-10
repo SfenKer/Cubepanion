@@ -62,40 +62,8 @@ public class AutoVoteSubConfig extends Config {
   @DropdownSetting
   private final ConfigProperty<TwoOptionsMode> ender = new ConfigProperty<>(TwoOptionsMode.NONE);
 
-  @DropdownSetting
-  private final ConfigProperty<TwoOptionsMode> disasters = new ConfigProperty<>(TwoOptionsMode.LEFT);
-
-  @SwitchSetting
-  private final ConfigProperty<Boolean> experiments = new ConfigProperty<>(false);
-
   @SliderSetting(min = 0, max = 1000, steps = 10f)
   private final ConfigProperty<Integer> delay = new ConfigProperty<>(100);
-
-  public AutoVoteSubConfig() {
-    enabled.addChangeListener((prop, oldV, newV) -> {
-      if (oldV || !newV) {
-        return;
-      }
-
-      if (experiments.get()) {
-        return;
-      }
-
-      Notification notification = Notification
-          .builder()
-          .type(Type.SYSTEM)
-          .title(Component.translatable("cubepanion.notifications.experimentsIsOff.title",
-              Colours.Primary))
-          .text(Component.translatable("cubepanion.notifications.experimentsIsOff.text",
-              Colours.Secondary))
-          .addButton(NotificationButton.of(
-              Component.translatable("cubepanion.notifications.experimentsIsOff.enable"),
-              () -> experiments.set(true)))
-          .duration(5000)
-          .build();
-      Laby.labyAPI().notificationController().push(notification);
-    });
-  }
 
   @Override
   public int getConfigVersion() {
@@ -152,14 +120,6 @@ public class AutoVoteSubConfig extends Config {
 
   public ConfigProperty<TwoOptionsMode> getEnder() {
     return ender;
-  }
-
-  public ConfigProperty<TwoOptionsMode> getDisasters() {
-    return disasters;
-  }
-
-  public ConfigProperty<Boolean> getExperiments() {
-    return experiments;
   }
 
   public ConfigProperty<Integer> getDelay() {
