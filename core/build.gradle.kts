@@ -4,7 +4,7 @@ dependencies {
     labyProcessor()
     api(project(":api"))
 
-    compileOnly("io.netty:netty-all:4.0.23.Final")
+    compileOnly("io.netty:netty-all:4.1.118.Final")
 }
 
 labyModAnnotationProcessor {

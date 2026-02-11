@@ -69,13 +69,6 @@ public class Cubepanion extends LabyAddon<CubepanionConfig> {
     CubepanionAPI.Init();
     AutoVoteProvider.init(this.configuration().getAutoVoteSubConfig());
 
-    socket = new CubeSocket(
-        this,
-        labyAPI().minecraft().sessionAccessor(),
-        labyAPI().eventBus(),
-        labyAPI().notificationController());
-    registerListener(socket);
-
     DefaultReferenceStorage storage = this.referenceStorageAccessor();
     chestFinderLink = storage.getChestFinderLink();
     functionLink = storage.getFunctionLink();
@@ -89,6 +82,14 @@ public class Cubepanion extends LabyAddon<CubepanionConfig> {
     if (codecLink == null) {
       log.warn("CodecLink is null. Some features may not work.");
     }
+
+    socket = new CubeSocket(
+        this,
+        labyAPI().minecraft().sessionAccessor(),
+        labyAPI().eventBus(),
+        labyAPI().notificationController(),
+        functionLink);
+    registerListener(socket);
 
     this.manager = new CubepanionManager(this);
 

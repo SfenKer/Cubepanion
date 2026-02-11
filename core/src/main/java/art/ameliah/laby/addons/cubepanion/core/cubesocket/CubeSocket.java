@@ -14,7 +14,9 @@ import art.ameliah.laby.addons.cubepanion.core.cubesocket.session.CubeSocketPlay
 import art.ameliah.laby.addons.cubepanion.core.cubesocket.session.CubeSocketSession;
 import art.ameliah.laby.addons.cubepanion.core.cubesocket.session.CubeSocketState;
 import art.ameliah.laby.addons.cubepanion.core.events.CubeJoinEvent;
+import art.ameliah.laby.addons.cubepanion.core.versionlinkers.FunctionLink;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -61,6 +63,7 @@ public class CubeSocket extends Service {
       (new ThreadFactoryBuilder()).withNameFormat("CubeSocketExecutor#d").build());
   private final SessionAccessor sessionAccessor;
   private final EventBus eventBus;
+  private final FunctionLink functionLink;
 
   private CubeSocketSession session = null;
   private CubeSocketHandler channelHandler = null;
@@ -72,13 +75,14 @@ public class CubeSocket extends Service {
   private String lastDisconnectReason;
 
   public CubeSocket(Cubepanion addon, SessionAccessor sessionAccessor, EventBus eventBus,
-      NotificationController notifications) {
+      NotificationController notifications, FunctionLink fl) {
     this.addon = addon;
     this.state = CubeSocketState.OFFLINE;
     this.timeNextConnect = TimeUtil.getMillis();
     this.connectTries = 0;
     this.sessionAccessor = sessionAccessor;
     this.eventBus = eventBus;
+    this.functionLink = fl;
 
     this.eventBus.registerListener(new CubeSocketNotifications(this, notifications));
     this.eventBus.registerListener(new CubeSocketPerkTracker(this, addon));
@@ -201,7 +205,7 @@ public class CubeSocket extends Service {
     this.sendPacket(packet, null);
   }
 
-  public void sendPacket(Packet packet, Consumer<SocketChannel> callback) {
+  public void sendPacket(Packet packet, Consumer<Channel> callback) {
     if (packet == null) {
       log.warn("Tried to send a null packet");
       return;
@@ -210,28 +214,28 @@ public class CubeSocket extends Service {
     if (channel == null || !channel.isActive()) {
       return;
     }
-    if (channel.eventLoop().inEventLoop()) {
+
+    var loop = this.functionLink.getEventLoop(channel);
+
+    if (loop.inEventLoop()) {
       channel
           .writeAndFlush(packet)
           .addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
       if (callback != null) {
         callback.accept(channel);
       }
-    } else {
-      channel
-          .eventLoop()
-          .execute(() -> {
-                channel
-                    .writeAndFlush(packet)
-                    .addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-                if (callback != null) {
-                  callback.accept(channel);
-                }
-              }
-          );
+
+      return;
     }
 
-
+    loop.execute(() -> {
+      channel
+          .writeAndFlush(packet)
+          .addListeners(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+      if (callback != null) {
+        callback.accept(channel);
+      }
+    });
   }
 
   public NioSocketChannel getChannel() {

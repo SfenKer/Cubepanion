@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoop;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.reference.annotation.Referenceable;
 import net.labymod.api.util.concurrent.task.Task;
@@ -20,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class FunctionLink {
 
   private final Logging log = Logging.create(Cubepanion.class.getSimpleName());
+
+  public abstract EventLoop getEventLoop(Channel channel);
 
   public abstract void setCoolDown(@NotNull ItemStack itemStack, int duration);
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoop;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -24,6 +26,11 @@ import org.jetbrains.annotations.Nullable;
 @Singleton
 @Implements(FunctionLink.class)
 public class VersionedFunctionLink extends FunctionLink {
+
+  @Override
+  public EventLoop getEventLoop(Channel channel) {
+    return channel.eventLoop();
+  }
 
   @Override
   public void setCoolDown(@NotNull net.labymod.api.client.world.item.ItemStack itemStack,
