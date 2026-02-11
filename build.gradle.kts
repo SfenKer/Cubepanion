@@ -23,7 +23,7 @@ labyMod {
             }
 
             val file = file("./game-runner/src/${this.sourceSetName}/resources/cubepanion-${versionId}.accesswidener")
-            accessWidener.set(file)
+            accessWidener(file)
         }
     }
 
