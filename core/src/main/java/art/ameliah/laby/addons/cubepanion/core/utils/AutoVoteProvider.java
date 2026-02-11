@@ -38,7 +38,7 @@ public class AutoVoteProvider {
     ));
     providers.put(CubeGame.PILLARS_OF_FORTUNE, AutoVoteProvider.of(0,
         () -> VotePair.of(12, config.getPofGameMode().get().slot, "Game Mode"),
-        () -> VotePair.of(14, config.getPofMapMode().get().slot, "Map Mode")
+        () -> VotePair.of(14, config.getPofMapMode().get().slot, "Map Modifier")
     ));
     providers.put(CubeGame.BEDWARS, AutoVoteProvider.of(0,
         () -> VotePair.of(-1, config.getBedWarsModifier().get().slot, "Modifiers")
@@ -50,9 +50,6 @@ public class AutoVoteProvider {
     providers.put(CubeGame.ENDER, AutoVoteProvider.of(0,
         () -> VotePair.of(-1, config.getEnder().get().slot, "")
     ));
-    /*providers.put(CubeGame.DISASTERS, AutoVoteProvider.of(0,
-        () -> VotePair.of(-1, config.getDisasters().get().slot, "")
-    ));*/
   }
 
   public static AutoVoteProvider getProvider(CubeGame game) {
