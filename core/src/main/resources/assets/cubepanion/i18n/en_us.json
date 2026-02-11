@@ -513,6 +513,9 @@
       "feather_cooldown": {
         "name": "Feather cooldown"
       },
+      "egg_mites_cooldown": {
+        "name": "Egg mites cooldown"
+      },
       "perk_tracking_personal": {
         "name": "Personal Perk Tracker",
         "key": {

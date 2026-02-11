@@ -171,6 +171,14 @@ public class WidgetManager {
                 .isInPreGameState(),
             5, 1, () -> true));
 
+    // Ender mites Cooldown
+    hudWidgetRegistry.register(
+        new TextTrackerHudWidget(category, "egg_mites_cooldown", "EggMite Cooldown", "5s",
+            () -> addon.getManager().getCooldownManager().getCooldownString(CooldownManager.EGG_MITES, CooldownManager.EGG_MITES_COOLDOWN_TIME),
+            () -> addon.getManager().isPlaying(CubeGame.TEAM_EGGWARS) && !addon.getManager()
+                .isInPreGameState(),
+            5, 1, () -> true));
+
     // Game Timer
     hudWidgetRegistry.register(new GameTimerWidget(category, "elapsed_time_tracker", 5, 1));
 

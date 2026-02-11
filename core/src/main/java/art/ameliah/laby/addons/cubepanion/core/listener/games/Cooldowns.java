@@ -26,6 +26,7 @@ public class Cooldowns {
 
     this.cooldowns.put(CooldownManager.FIREBALL, CooldownManager.FIREBALL_COOLDOWN_TIME);
     this.cooldowns.put(CooldownManager.FEATHER, CooldownManager.FEATHER_COOLDOWN_TIME);
+    this.cooldowns.putIfAbsent(CooldownManager.EGG_MITES, CooldownManager.EGG_MITES_COOLDOWN_TIME);
   }
 
   @Subscribe

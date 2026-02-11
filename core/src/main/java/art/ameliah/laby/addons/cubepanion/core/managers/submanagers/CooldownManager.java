@@ -12,6 +12,8 @@ public class CooldownManager implements Manager {
   public static long FIREBALL_COOLDOWN_TIME = 30 * 1000L;
   public static String FEATHER = "feather";
   public static long FEATHER_COOLDOWN_TIME = 10 * 1000L;
+  public static String EGG_MITES = "endermite_spawn_egg";
+  public static long EGG_MITES_COOLDOWN_TIME = 5 * 1000L;
 
   private final Map<String, Long> lastUse = new HashMap<>();
 
