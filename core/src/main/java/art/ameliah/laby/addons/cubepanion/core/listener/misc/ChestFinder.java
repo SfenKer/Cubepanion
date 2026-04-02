@@ -16,9 +16,9 @@ import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.render.world.RenderWorldEvent;
+import net.labymod.api.laby3d.pipeline.RenderStates;
 import net.labymod.api.util.concurrent.task.Task;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL11;
 
 public class ChestFinder {
 
@@ -62,7 +62,7 @@ public class ChestFinder {
           .getLocations()
           .clear();
     }
-    
+
   }
 
   @Subscribe
@@ -96,28 +96,25 @@ public class ChestFinder {
       stack.rotate(camera.getYaw(), 0, -1, 0);
       stack.rotate(camera.getPitch(), 1, 0, 0);
 
-      final var maxScale = .15f;
+      final var maxScale = .25f;
       final var baseScale = .03f;
       final var scale =
-          (float) Math.max(baseScale, Math.min(maxScale, distSq * .0015));
+          (float) Math.max(baseScale, Math.min(maxScale, distSq * .002));
 
       stack.scale(-scale, -scale, scale);
-
-      GL11.glDisable(GL11.GL_DEPTH_TEST);
 
       final var iconSize = 16f;
       final var iconX = -iconSize / 2f;
       final var iconY = -18f;
 
       CHEST_ITEM_ICON.render(
+          RenderStates.SEE_THROUGH_NAMETAG_ICON,
           stack,
           iconX,
           iconY,
           iconSize,
           iconSize
       );
-
-      GL11.glEnable(GL11.GL_DEPTH_TEST);
 
       Laby.references().componentRenderer().builder()
           .text(CHEST_HOLOGRAM)
