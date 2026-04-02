@@ -747,9 +747,6 @@
         }
       }
     },
-    "hologram": {
-      "chest_finder": "Hidden Treasure"
-    },
     "notifications": {
       "experimentsIsOff": {
         "title": "Recommended!",

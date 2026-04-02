@@ -35,8 +35,4 @@ public abstract class ChestFinderLink {
     }
   }
 
-  public @NotNull List<ChestLocation> getLocations() {
-    return this.locations;
-  }
-
 }
